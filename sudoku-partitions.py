@@ -114,7 +114,40 @@ def _format_partitions(lst, repfree=False):
     digits.
     """
     
-    pass
+    s = "" # initialize output string
+    
+    # Loop over outer layer (possible sums)
+    for i in range(len(lst)):
+        
+        # Add newlines after first entry
+        if i > 0:
+            s += "\n\n"
+        
+        # Use the first partition to compute the associated sum
+        n = sum(lst[i][0][0])
+        s += f"=== {n} ==="
+        
+        # Loop over second layer (lengths of partitions)
+        for j in range(len(lst[i])):
+            
+            # Skip empty partitions
+            if len(lst[i][j]) == 0:
+                continue
+            
+            # Get list length
+            m = len(lst[i][j][0])
+            s += f"\n[{m:d}]: "
+            
+            # Loop over third layer (the actual partitions)
+            for k in range(len(lst[i][j])):
+                if k > 0:
+                    s += ", "
+                s += f"({lst[i][j][k][0]}"
+                for elem in lst[i][j][k][1:]:
+                    s += f",{elem}"
+                s += ")"
+    
+    return s
 
 #------------------------------------------------------------------------------
 
@@ -135,7 +168,16 @@ def print_partitions(lst, fname=None, repfree=False):
             the _format_partitions function.
     """
     
-    pass
+    # Generate string
+    s = _format_partitions(lst, repfree=repfree)
+    
+    # If no file, print to screen
+    if fname == None:
+        print(s)
+    # Otherwise print to file
+    else:
+        with open(fname, 'w') as f:
+            f.write(s)
 
 #==============================================================================
 
@@ -153,9 +195,16 @@ print(integer_partition(2, 4))
 
 print("All partitions of 4-6 into sizes 3-5")
 lst = all_partitions(4, 6, 2, 5)
-#print(lst)
-print(lst[0])
-print(lst[1])
-print(lst[2])
+print(lst)
+#print(lst[0])
+#print(lst[1])
+#print(lst[2])
+
+print("Formatted partitions:")
+#print(_format_partitions(lst))
+print_partitions(lst)
+
+print("All partitions of 4-20 into sizes 2-9")
+print_partitions(all_partitions(4, 18, 2, 6))
 
 input("Press [Enter] to quit.")
