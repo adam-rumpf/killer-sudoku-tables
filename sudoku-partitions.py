@@ -19,17 +19,18 @@ def integer_partition(n, m, d=9):
 
 #------------------------------------------------------------------------------
 
-def _repeats(lst):
+def _no_repeats(lst):
     """Determines whether a list includes repeated values.
     
     Inputs:
         lst (list) - List to check.
     
     Returns:
-        (bool) - True if there is an element repeated in lst, False otherwise.
+        (bool) - True if all elements are unique, False if there are repeats.
     """
     
-    pass
+    # Compare list to itself cast as a set (which eliminates duplicates)
+    return len(lst) == len(set(lst))
 
 #------------------------------------------------------------------------------
 
@@ -45,11 +46,12 @@ def all_partitions(nmin, nmax, mmin, mmax, d=9):
     
     Returns:
         (list(list(list))) - List of lists of lists including all partitions
-            within the specified ranges. If the elements of the list are indexed
-            as [i][j][k], then i indicates the number being partitioned, j
-            indicates the number of digits into which the number is being
-            partitioned, and k indicates the partition within that list
-            (lexicographically ordered).
+            within the specified ranges.
+    
+    If the elements of the list are indexed as [i][j][k], then i indicates the
+    number being partitioned (in ascending order), j indicates the number of
+    digits into which the number is being partitioned (in ascending order), and
+    k indicates the partition within that list (in lexicographic order).
     """
     
     pass
@@ -104,4 +106,12 @@ def print_partitions(lst, fname=None, repfree=False):
 
 #==============================================================================
 
-# Include scripts for generating the main table here.
+# Tests
+list1 = [2, 5, 1, 6]
+list2 = [1, 3, 6, 1, 3, 7]
+print(list1)
+print(_no_repeats(list1))
+print(list2)
+print(_no_repeats(list2))
+
+input("Press [Enter] to quit.")
