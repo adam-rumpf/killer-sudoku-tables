@@ -55,6 +55,33 @@ def _no_repeats(lst):
 
 #------------------------------------------------------------------------------
 
+def _sort_repeats(lst):
+    """Divides a a list of lists into a repeat-free part and repeat-allowed part.
+    
+    
+    Inputs:
+        lst (list(list)) - List of lists to divide.
+    
+    Returns:
+        list, list - A tuple of two lists, partitioning the elements of the
+            input list-of-lists into repeat-free lists and repeat-allowed lists,
+            respectively.
+    """
+    
+    ulist = [] # list of partitions with unique digits
+    rlist = [] # list of partitions with repeated digits
+    
+    # Sort the partitions into the appropriate list
+    for p in lst:
+        if _no_repeats(p):
+            ulist.append(p)
+        else:
+            rlist.append(p)
+    
+    return ulist, rlist
+
+#------------------------------------------------------------------------------
+
 def all_partitions(nmin, nmax, mmin, mmax, d=9):
     """Generates a list of partitions over a range of digits and sizes.
     
@@ -152,15 +179,7 @@ def _format_partitions(lst, repfree=False):
             # Repeat-free on separate line
             else:
                 # Separate partition list into repeat-free and otherwise
-                ulist = [] # list of partitions with unique digits
-                rlist = [] # list of partitions with repeated digits
-                
-                # Sort the partitions into the appropriate list
-                for p in lst[i][j]:
-                    if _no_repeats(p):
-                        ulist.append(p)
-                    else:
-                        rlist.append(p)
+                ulist, rlist = _sort_repeats(lst[i][j])
                 
                 # Print repeat-free partitions
                 if len(ulist) > 0:
