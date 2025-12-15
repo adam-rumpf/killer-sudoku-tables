@@ -15,7 +15,25 @@ def integer_partition(n, m, d=9):
             digits (values 1-d) that sum to n, in lexicographic order.
     """
     
-    pass
+    # Base cases
+    if n < 1 or m < 1:
+        return []
+    if m == 1 and n <= d:
+        return [[n]]
+    
+    lst = [] # initialize the output list
+    
+    # Loop through all possible first digits in descending order
+    for i in range(min(n,d), 0, -1):
+        
+        # Recursively partition digits after first
+        ends = integer_partition(n-i, m-1, d=min(i,d))
+        
+        # Add all possible endings to main list
+        for end in ends:
+            lst.append([i] + end)
+    
+    return lst
 
 #------------------------------------------------------------------------------
 
@@ -107,11 +125,13 @@ def print_partitions(lst, fname=None, repfree=False):
 #==============================================================================
 
 # Tests
-list1 = [2, 5, 1, 6]
-list2 = [1, 3, 6, 1, 3, 7]
-print(list1)
-print(_no_repeats(list1))
-print(list2)
-print(_no_repeats(list2))
+print("5 into 1:")
+print(integer_partition(5, 1))
+print("5 into 2:")
+print(integer_partition(5, 2))
+print("5 into 3:")
+print(integer_partition(5, 3))
+print("10 into 4:")
+print(integer_partition(10, 4))
 
 input("Press [Enter] to quit.")
