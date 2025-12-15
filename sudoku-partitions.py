@@ -138,16 +138,56 @@ def _format_partitions(lst, repfree=False):
             m = len(lst[i][j][0])
             s += f"\n[{m:d}]: "
             
-            # Loop over third layer (the actual partitions)
-            for k in range(len(lst[i][j])):
-                if k > 0:
-                    s += ", "
-                s += f"({lst[i][j][k][0]}"
-                for elem in lst[i][j][k][1:]:
-                    s += f",{elem}"
-                s += ")"
+            # All partitions (no special formatting for repeat-free)
+            if repfree == False:
+                # Loop through all partitions
+                for k in range(len(lst[i][j])):
+                    if k > 0:
+                        s += ", "
+                    s += f"({lst[i][j][k][0]}"
+                    for elem in lst[i][j][k][1:]:
+                        s += f",{elem}"
+                    s += ")"
+            
+            # Repeat-free on separate line
+            else:
+                # Separate partition list into repeat-free and otherwise
+                ulist = [] # list of partitions with unique digits
+                rlist = [] # list of partitions with repeated digits
+                
+                # Sort the partitions into the appropriate list
+                for p in lst[i][j]:
+                    if _no_repeats(p):
+                        ulist.append(p)
+                    else:
+                        rlist.append(p)
+                
+                # Print repeat-free partitions
+                if len(ulist) > 0:
+                    for k in range(len(ulist)):
+                        if k > 0:
+                            s += ", "
+                        s += f"({ulist[k][0]}"
+                        for elem in ulist[k][1:]:
+                            s += f",{elem}"
+                        s += ")"
+                    if len(rlist) > 0:
+                        s += ","
+                else:
+                    s += "(no repeat-free)"
+                
+                # Print repeated partitions
+                if len(rlist) > 0:
+                    s += "\n     "
+                    for k in range(len(rlist)):
+                        if k > 0:
+                            s += ", "
+                        s += f"({rlist[k][0]}"
+                        for elem in rlist[k][1:]:
+                            s += f",{elem}"
+                        s += ")"
     
-    return s
+    return s + "\n"
 
 #------------------------------------------------------------------------------
 
@@ -181,30 +221,10 @@ def print_partitions(lst, fname=None, repfree=False):
 
 #==============================================================================
 
-# Tests
-print("5 into 1:")
-print(integer_partition(5, 1))
-print("5 into 2:")
-print(integer_partition(5, 2))
-print("5 into 3:")
-print(integer_partition(5, 3))
-print("10 into 4:")
-print(integer_partition(10, 4))
-print("2 into 4:")
-print(integer_partition(2, 4))
+# Generate a small output table
+print_partitions(all_partitions(4, 18, 2, 4),
+                 fname="killer_partitions_short.txt", repfree=True)
 
-print("All partitions of 4-6 into sizes 3-5")
-lst = all_partitions(4, 6, 2, 5)
-print(lst)
-#print(lst[0])
-#print(lst[1])
-#print(lst[2])
-
-print("Formatted partitions:")
-#print(_format_partitions(lst))
-print_partitions(lst)
-
-print("All partitions of 4-20 into sizes 2-9")
-print_partitions(all_partitions(4, 18, 2, 6))
-
-input("Press [Enter] to quit.")
+# Generate a large output table
+print_partitions(all_partitions(4, 18, 2, 9),
+                 fname="killer_partitions_long.txt", repfree=True)
