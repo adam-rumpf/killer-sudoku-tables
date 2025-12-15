@@ -240,10 +240,17 @@ def print_partitions(lst, fname=None, repfree=False):
 
 #==============================================================================
 
-# Generate a small output table
-print_partitions(all_partitions(4, 18, 2, 4),
-                 fname="killer_partitions_short.txt", repfree=True)
+## Generate a small output table
+#print_partitions(all_partitions(4, 18, 2, 4),
+#                 fname="killer_partitions_short.txt", repfree=True)
 
-# Generate a large output table
-print_partitions(all_partitions(4, 18, 2, 9),
-                 fname="killer_partitions_long.txt", repfree=True)
+## Generate a large output table
+#print_partitions(all_partitions(4, 18, 2, 9),
+#                 fname="killer_partitions_long.txt", repfree=True)
+
+for n in range(8, 28):
+    print(f"=== {n} ===")
+    ulist, rlist = _sort_repeats(integer_partition(n, 3))
+    print(ulist)
+    print(rlist)
+input()
