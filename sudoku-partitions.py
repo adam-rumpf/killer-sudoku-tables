@@ -8,11 +8,14 @@ def integer_partition(n, m, d=9):
     Inputs:
         n (int) - Integer to be partitioned.
         m (int) - Number of digits into which to partition n.
-        d (int) - Maximum digit into which to partition n. Defaults to 9.
+        d (int) - Maximum digit into which to partition n. Defaults to 9, but
+            used in recursive calls to prohibit ascensions in the digit
+            sequence.
     
     Returns:
         (list(list)) - List of lists including all possible collections of m
-            digits (values 1-d) that sum to n, in lexicographic order.
+            digits (values 1-d) that sum to n, in lexicographic order, with all
+            sequences in descending order.
     """
     
     # Base cases
@@ -72,7 +75,19 @@ def all_partitions(nmin, nmax, mmin, mmax, d=9):
     k indicates the partition within that list (in lexicographic order).
     """
     
-    pass
+    lst = [] # initialize main list
+    
+    # Loop through all sums
+    for i in range(nmin, nmax+1):
+        lst.append([])
+        
+        # Loop through all partition sizes
+        for j in range(mmin, mmax+1):
+            
+            # Add list of partitions to main list
+            lst[-1].append(integer_partition(i, j, d=d))
+    
+    return lst
 
 #------------------------------------------------------------------------------
 
@@ -133,5 +148,14 @@ print("5 into 3:")
 print(integer_partition(5, 3))
 print("10 into 4:")
 print(integer_partition(10, 4))
+print("2 into 4:")
+print(integer_partition(2, 4))
+
+print("All partitions of 4-6 into sizes 3-5")
+lst = all_partitions(4, 6, 2, 5)
+#print(lst)
+print(lst[0])
+print(lst[1])
+print(lst[2])
 
 input("Press [Enter] to quit.")
