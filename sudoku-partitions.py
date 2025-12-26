@@ -56,8 +56,7 @@ def _no_repeats(lst):
 #------------------------------------------------------------------------------
 
 def _sort_repeats(lst):
-    """Divides a a list of lists into a repeat-free part and repeat-allowed part.
-    
+    """Divides a list of lists into a repeat-free part and repeat-allowed part.
     
     Inputs:
         lst (list(list)) - List of lists to divide.
